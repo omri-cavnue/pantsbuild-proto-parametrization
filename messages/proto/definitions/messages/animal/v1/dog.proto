@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package definitions.messages.animal.v1;
+
+import "definitions/third_party/bq/v1/bq_field.proto";
+import "definitions/third_party/bq/v1/bq_table.proto";
+import "definitions/messages/human/v1/person.proto";
+
+import "google/protobuf/timestamp.proto";
+
+message Dog {
+  option (gen_bq_schema.bigquery_opts).table_name = "Dog";
+
+  optional int64 id = 1 [
+    (gen_bq_schema.bigquery) = { require: true }
+  ];
+  optional string name = 2 [
+    (gen_bq_schema.bigquery) = { require: true }
+  ];
+  // Timestamp representing the time this run was replayed
+  optional google.protobuf.Timestamp birth = 3 [(gen_bq_schema.bigquery) = {
+    require: true
+    type_override: "TIMESTAMP"
+  }];
+  optional human.v1.Person owner = 4 [
+    (gen_bq_schema.bigquery) = { require: true }
+  ];
+}

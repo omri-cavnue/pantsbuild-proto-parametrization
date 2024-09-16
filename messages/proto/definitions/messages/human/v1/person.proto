@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package definitions.messages.human.v1;
+
+import "google/protobuf/timestamp.proto";
+
+message Person {
+  optional int64 id = 1;
+  optional google.protobuf.Timestamp birth = 2;
+  optional string name = 3;
+}

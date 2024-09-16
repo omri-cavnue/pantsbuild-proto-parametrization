@@ -1,0 +1,100 @@
+[GLOBAL]
+pants_version = "2.21.0"
+backend_packages.add = [
+  "pants.backend.experimental.adhoc",
+  "pants.backend.build_files.fmt.black",
+  "pants.backend.python",
+  "pants.backend.experimental.python",
+  "pants.backend.python.mixed_interpreter_constraints",
+  "pants.backend.python.lint.docformatter",
+  "pants.backend.python.lint.black",
+  "pants.backend.python.lint.isort",
+  "pants.backend.python.typecheck.mypy",
+  "pants.backend.codegen.protobuf.lint.buf",
+  "pants.backend.codegen.protobuf.python",
+  "pants.backend.experimental.javascript",
+  "pants.backend.docker",
+  "pants.backend.experimental.cue",
+  "pants.backend.experimental.terraform",
+  "pants.backend.shell",
+  "pants.backend.tools.preamble",
+]
+pants_ignore_use_gitignore = true
+pants_ignore = [
+  ".*/",
+  "*_pb2.py",
+  "*_pb2.pyi",
+  "*_pb2_grpc.py",
+  "*_pb2_grpc.pyi",
+]
+colors = true
+keep_sandboxes = "on_failure"
+print_stacktrace = true
+unmatched_build_file_globs = "error"
+
+[anonymous-telemetry]
+enabled = false
+
+[source]
+root_patterns = [
+  "src",
+  "tests",
+  "messages/proto"
+]
+
+[python]
+interpreter_constraints = [">=3.8.0,<3.11.0"]
+pip_version = "latest"
+macos_big_sur_compatibility = true
+enable_resolves = true
+default_resolve = "prod"
+
+[python.resolves]
+prod = "python/third-party/prod.lock"
+dev = "python/third-party/dev.lock"
+
+[python-infer]
+use_rust_parser = true
+ambiguity_resolution = "by_source_root"
+
+[python-protobuf]
+mypy_plugin = true
+
+[protoc]
+version = "23.4"
+known_versions = [
+  "23.4 | linux_x86_64 | 0502f286ac9ed860b629a7965a14527b1f2dd131e4283fa23c2d7f184672aa9a | 2916317",
+  "23.4 | linux_arm64 | 1c7750b6e038305b5a7fc3d0cda1ebefdf106a4f30a787bf826ed2fc47c3967d | 2879347",
+  "23.4 | macos_x86_64 | 07e5fdcf1b0708d3367dc5e6eb8d135de7e407d75316c93155cfd8ab362eec80 | 2008727",
+  "23.4 | macos_arm64 | 8c7afae8626b6811e7b5897d16d940c2dbf50b1e135ed958a01db6566bdda726 | 1974960",
+]
+
+[generate-lockfiles]
+diff = true
+
+[changed]
+dependents = "transitive"
+
+[docker]
+env_vars = [
+  "DOCKER_CONFIG=%(homedir)s/.docker",
+]
+
+tools = [
+  "docker-credential-gcloud",
+  "dirname",
+  "readlink",
+  "python3",
+  "cut",
+  "sed",
+  "bash",
+  "node",
+  "npm",
+]
+
+[export]
+py_editable_in_resolve = ["prod", "dev"]
+
+[test]
+timeout_default = 120
+timeout_maximum = 1200
